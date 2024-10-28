@@ -1,22 +1,23 @@
----  
+---
 - name: Procesamiento local en el nodo de Ansible
   hosts: localhost
-  connection: local 
-  gather_facts: no 
+  connection: local
+  gather_facts: false
   vars:
     numeros: [1, 2, 3, 4, 5]
     archivo_resultado: "./resultados_cuadrados.txt"
 
   tasks:
     - name: Calcular el cuadrado de cada número
-      set_fact:
+      ansible.builtin.set_fact:
         cuadrados: "{{ numeros | map('int') | map('pow', 2) | list }}"
-    
+
     - name: Mostrar los cuadrados calculados
-      debug:
+      ansible.builtin.debug:
         msg: "Los cuadrados de los números son: {{ cuadrados }}"
 
     - name: Guardar resultados en un archivo
-      copy:
+      ansible.builtin.copy:
         content: "Los cuadrados de los números son: {{ cuadrados }}"
         dest: "{{ archivo_resultado }}"
+        mode: '0755'
